@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import fokia.gq.zhifu.Dao.DBOpenHelper;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private List<Income> incomes = new ArrayList<>();
@@ -32,6 +34,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ViewPager viewPager;
 
     private TabLayout tabLayout;
+
+    private DBOpenHelper dbOpenHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +50,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
+
+        dbOpenHelper = new DBOpenHelper(this, "ZhiFu.db", null, 1);
+        dbOpenHelper.getWritableDatabase();
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

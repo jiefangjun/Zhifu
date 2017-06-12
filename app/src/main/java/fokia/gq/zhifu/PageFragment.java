@@ -43,8 +43,6 @@ public class PageFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_income, container, false);
-      /*  TextView textView = (TextView) view;
-        textView.setText("Fragment #" + mPage);*/
         initIncomes();
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
