@@ -50,12 +50,11 @@ public class PageFragment extends Fragment{
         IncomeAdapter adapter = new IncomeAdapter(incomes);
         recyclerView.setAdapter(adapter);
         return view;
-
     }
 
     private void initIncomes(){
         for (int i=0;i<10;i++){
-            Income income = new Income(i*10, i+"wocao", new Date());
+            Income income = new Income(i*10, i+"wocao", new Date(), i+"", "Central City");
             incomes.add(income);
         }
     }

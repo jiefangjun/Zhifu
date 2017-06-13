@@ -35,8 +35,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private TabLayout tabLayout;
 
-    private DBOpenHelper dbOpenHelper;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,8 +49,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
 
-        dbOpenHelper = new DBOpenHelper(this, "ZhiFu.db", null, 1);
-        dbOpenHelper.getWritableDatabase();
+
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

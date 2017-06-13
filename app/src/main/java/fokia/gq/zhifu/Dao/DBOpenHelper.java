@@ -12,7 +12,7 @@ import android.widget.Toast;
 public class DBOpenHelper extends SQLiteOpenHelper{
 
     public static final String CREATE_TB_PWD = "create table tb_pwd("
-            + "password varchar(20))";
+            + "password varchar(20) DEFAULT 123)";
 
     public static final String CREATE_TB_OUTACCOUNT = "create table tb_outaccount("
             + "id integer primary key autoincrement,"
@@ -34,6 +34,8 @@ public class DBOpenHelper extends SQLiteOpenHelper{
             + "id integer primary key autoincrement,"
             + "flag varchar(200))";
 
+    public static final String DEFAULT_PASSWORD = "insert into tb_pwd(password) values(123) ";
+
     private Context mContext;
     public  DBOpenHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version){
         super(context, name, factory, version);
@@ -45,6 +47,7 @@ public class DBOpenHelper extends SQLiteOpenHelper{
         db.execSQL(CREATE_TB_INACCOUNT);
         db.execSQL(CREATE_TB_OUTACCOUNT);
         db.execSQL(CREATE_NOTE);
+        db.execSQL(DEFAULT_PASSWORD);
         Toast.makeText(mContext, "初始化数据成功", Toast.LENGTH_LONG).show();
     }
 
