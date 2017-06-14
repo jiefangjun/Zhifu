@@ -1,4 +1,4 @@
-package fokia.gq.zhifu;
+package fokia.gq.zhifu.view;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,11 +9,11 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import fokia.gq.zhifu.Dao.DBOpenHelper;
 import fokia.gq.zhifu.Dao.PasswordDao;
+import fokia.gq.zhifu.R;
 
 /**
  * Created by archie on 6/13/17.

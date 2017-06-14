@@ -1,22 +1,23 @@
-package fokia.gq.zhifu;
+package fokia.gq.zhifu.Adapter;
 
-import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+
+import fokia.gq.zhifu.view.PageFragment;
 
 /**
  * Created by archie on 6/12/17.
  */
 
 public class ZhifuFragmentAdapter extends FragmentPagerAdapter {
-    final int PAGE_COUNT = 3;
-    private String tabTitles[] = new String[]{"收入","支出","总览"};
-    private Context context;
 
-    public ZhifuFragmentAdapter(FragmentManager fm,Context context) {
+    final int PAGE_COUNT = 4;
+    private String tabTitles[] = new String[]{"收入","支出","总览", "便签"};
+
+
+    public ZhifuFragmentAdapter(FragmentManager fm) {
         super(fm);
-        this.context = context;
     }
 
     @Override

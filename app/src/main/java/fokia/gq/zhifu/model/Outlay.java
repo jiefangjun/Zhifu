@@ -1,23 +1,39 @@
-package fokia.gq.zhifu;
+package fokia.gq.zhifu.model;
 
-import java.util.Date;
+import java.lang.String;
 
 /**
  * Created by archie on 6/12/17.
  */
 
-public class Income {
+public class Outlay {
     private double money;
     private String note;
-    private Date date;
+    private String date;
     private String type;
     private String address;
 
-    public Income(double money, String note, Date date, String type, String address){
+    public Outlay(double money, String note, String date, String type, String address) {
         this.money = money;
         this.note = note;
         this.date = date;
         this.type = type;
+        this.address = address;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
         this.address = address;
     }
 
@@ -37,27 +53,11 @@ public class Income {
         this.note = note;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 }

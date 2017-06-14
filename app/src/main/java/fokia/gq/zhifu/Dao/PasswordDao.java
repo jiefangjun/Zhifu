@@ -34,5 +34,4 @@ public class PasswordDao {
         cursor.moveToLast();
         return cursor.getString(0);
     }
-
 }
