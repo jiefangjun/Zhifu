@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import fokia.gq.zhifu.view.PageFragment;
+import fokia.gq.zhifu.fragmenttest.PageFragment;
 
 /**
  * Created by archie on 6/12/17.

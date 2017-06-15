@@ -20,11 +20,17 @@ public class NoteDao extends BaseDBDao {
         super(db, id);
     }
 
+    public NoteDao(SQLiteDatabase db, String id, String content) {
+        super(db, id);
+        this.content = content;
+    }
+
     @Override
     public void insert(SQLiteDatabase db, String id) {
         ContentValues contentValues = new ContentValues();
         contentValues.put("flag", content);
         db.insert("tb_note", null, contentValues);
+        noteList.add(noteList.size(), new Note(content));
     }
 
     @Override

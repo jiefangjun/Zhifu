@@ -16,7 +16,6 @@ import fokia.gq.zhifu.model.Outlay;
 
 public class OutaccountDao extends BaseDBDao{
 
-    private int id;
     private double money;
     private String note;
     private String date;
@@ -25,19 +24,25 @@ public class OutaccountDao extends BaseDBDao{
 
     public static List<Outlay> outlays = new ArrayList<>();
 
-    public OutaccountDao(SQLiteDatabase db, String id) {
+    public OutaccountDao(SQLiteDatabase db, String id, double money, String note, String date, String type, String address) {
         super(db, id);
+        this.money = money;
+        this.note = note;
+        this.date = date;
+        this.type = type;
+        this.address = address;
     }
 
     @Override
     public void insert(SQLiteDatabase db, String id) {
         ContentValues contentValues = new ContentValues();
         contentValues.put("money", money);
-        contentValues.put("date", date);
+        contentValues.put("time", date);
         contentValues.put("type", type);
         contentValues.put("address", address);
         contentValues.put("mark",note);
         db.insert("tb_outaccount", null, contentValues);
+        outlays.add(outlays.size(), new Outlay(money, note, date, type, address));
     }
 
     @Override
@@ -62,7 +67,7 @@ public class OutaccountDao extends BaseDBDao{
     }
 
     public static void getOutlays(SQLiteDatabase db){
-        Cursor cursor = db.query("tb_outaccount", null, null, null, null, null, null);
+        Cursor cursor = db.query("tb_outaccount", null, null, null, null, null, "id DESC");
         while (cursor.moveToNext()){
             outlays.add(new Outlay(cursor.getDouble(1), cursor.getString(5), cursor.getString(2), cursor.getString(3), cursor.getString(4)));
         }

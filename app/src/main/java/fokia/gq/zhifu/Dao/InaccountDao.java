@@ -40,6 +40,7 @@ public class InaccountDao extends BaseDBDao{
         contentValues.put("handler", handler);
         contentValues.put("mark",note);
         db.insert("tb_inaccount", null, contentValues);
+        incomes.add(incomes.size(), new Income(money, note, date, type, handler));
     }
 
     @Override
@@ -64,12 +65,9 @@ public class InaccountDao extends BaseDBDao{
     }
 
     public static void getIncomes(SQLiteDatabase db){
-        Cursor cursor = db.query("tb_inaccount", null, null, null, null, null, null);
+        Cursor cursor = db.query("tb_inaccount", null, null, null, null, null, "id DESC");
         while (cursor.moveToNext()){
             incomes.add(new Income(cursor.getDouble(1), cursor.getString(5), cursor.getString(2), cursor.getString(3), cursor.getString(4)));
         }
     }
-
-
-
 }
