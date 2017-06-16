@@ -16,13 +16,8 @@ import static fokia.gq.zhifu.Dao.InaccountDao.incomes;
 
 public class ChangeListener implements StateChangeListener {
 
-    public ArrayList<Integer> selectedItems = new ArrayList<>();
-
-    private String TAG = "StateChangeListener";
-
     @Override
     public void onSelectMode() {
-        Log.d(TAG, "onSelectMode");
     }
 
     @Override
