@@ -34,6 +34,7 @@ public class ChangeListener implements StateChangeListener {
 
     @Override
     public void onDelete(@NotNull ArrayList<Integer> arrayList) {
+        Log.d("Listener delete", "exectued");
     }
 
     @Override

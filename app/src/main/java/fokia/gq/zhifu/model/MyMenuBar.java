@@ -13,7 +13,12 @@ import com.goyourfly.multiple.adapter.menu.MenuController;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 import fokia.gq.zhifu.R;
+
+import static fokia.gq.zhifu.Dao.InaccountDao.incomes;
 
 /**
  * Created by archie on 6/16/17.
@@ -38,7 +43,18 @@ public class MyMenuBar extends CustomMenuBar {
                 multipleAdapter.done(true);
                 break;
             case R.id.action_delete:
-                multipleAdapter.delete(true);
+                //下面函数会调用listener里的ondelete方法
+                //multipleAdapter.delete(true);
+                multipleAdapter.getSelectNum();
+                Log.d("selectNum", multipleAdapter.getSelectNum()+"");
+                ArrayList arrayList = multipleAdapter.getSelect();
+                Log.d("selectNumArray", multipleAdapter.getSelect()+"");
+                for (int i = 0; i<multipleAdapter.getSelectNum(); i++){
+                    incomes.remove((int)arrayList.get(i));
+                }
+                Log.d("incomes", incomes .size()+"");
+                multipleAdapter.notifyDataSetChanged();
+
                 break;
         }
     }
