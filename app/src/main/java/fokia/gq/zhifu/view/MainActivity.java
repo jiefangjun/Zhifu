@@ -1,5 +1,6 @@
 package fokia.gq.zhifu.view;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -25,10 +26,11 @@ import java.util.List;
 import fokia.gq.zhifu.Adapter.IncomeAdapter;
 import fokia.gq.zhifu.Adapter.ZhifuFragmentAdapter;
 import fokia.gq.zhifu.R;
+import fokia.gq.zhifu.fragmenttest.PageFragment;
 import fokia.gq.zhifu.model.Income;
 
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private List<Income> incomes = new ArrayList<>();
 
@@ -62,9 +64,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, AddActivity.class);
                 startActivity(intent);
-
-                /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();*/
             }
         });
 
@@ -94,18 +93,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_income) {
+            tabLayout.getTabAt(0).select();
+        } else if (id == R.id.nav_outlay) {
+            tabLayout.getTabAt(1).select();
+        } else if (id == R.id.nav_overcome) {
+            tabLayout.getTabAt(2).select();
+        } else if (id == R.id.nav_note) {
+            tabLayout.getTabAt(3).select();
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_settings) {
 
-        } else if (id == R.id.nav_manage) {
 
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.nav_help){
+            Intent intent = new Intent(MainActivity.this, HelpActivity.class);
+            startActivity(intent);
+        }else if (id == R.id.nav_exit) {
+            ActivityCollector.finishAll();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

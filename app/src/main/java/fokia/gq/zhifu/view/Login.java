@@ -19,7 +19,7 @@ import fokia.gq.zhifu.R;
  * Created by archie on 6/13/17.
  */
 
-public class Login extends AppCompatActivity {
+public class Login extends BaseActivity {
     private TextView passwordEdit;
     private FloatingActionButton loginButton;
     private PasswordDao passwordDao;

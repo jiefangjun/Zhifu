@@ -5,4 +5,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="activity_help">
+        左滑打开侧边栏，点击相应条目，打开各功能菜单，点按右下角浮动按钮，打开添加数据页面，输入添加数据后，再次点击保存。
+        在数据浏览界面长按删除，亦可多选。
+    </string>
 </resources>
