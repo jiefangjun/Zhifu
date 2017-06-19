@@ -38,6 +38,10 @@ public class NoteDao extends BaseDBDao {
         db.delete("tb_note", "id=?", new String[]{id});
     }
 
+    public static void staticDelete(SQLiteDatabase db,String id){
+        db.delete("tb_note", "flag=?", new String[]{id});
+    }
+
     @Override
     public void update(SQLiteDatabase db, String id) {
         ContentValues contentValues = new ContentValues();

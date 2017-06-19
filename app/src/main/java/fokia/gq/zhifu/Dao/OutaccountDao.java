@@ -50,6 +50,10 @@ public class OutaccountDao extends BaseDBDao{
         db.delete("tb_outaccount", "id=?", new String[]{id});
     }
 
+    public static void staticDelete(SQLiteDatabase db,String id){
+        db.delete("tb_outaccount", "time=?", new String[]{id});
+    }
+
     @Override
     public void update(SQLiteDatabase db, String id) {
         ContentValues contentValues = new ContentValues();

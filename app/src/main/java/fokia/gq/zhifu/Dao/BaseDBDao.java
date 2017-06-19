@@ -19,5 +19,5 @@ public abstract class BaseDBDao {
     public abstract void update(SQLiteDatabase db, String id);
     public abstract Cursor query(SQLiteDatabase db, String id);
 
-    //TODO 优化CRUD函数，不虚传入数据库参数
+    //TODO 优化CRUD函数，不需要传入数据库参数
 }

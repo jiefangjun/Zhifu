@@ -1,37 +1,24 @@
 package fokia.gq.zhifu.fragmenttest;
 
-import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.Toast;
 
 import com.goyourfly.multiple.adapter.MultipleAdapter;
 import com.goyourfly.multiple.adapter.MultipleSelect;
-import com.goyourfly.multiple.adapter.menu.CustomMenuBar;
-import com.goyourfly.multiple.adapter.menu.MenuBar;
-import com.goyourfly.multiple.adapter.menu.SimpleDeleteMenuBar;
-import com.goyourfly.multiple.adapter.menu.SimpleDeleteSelectAllMenuBar;
 import com.goyourfly.multiple.adapter.viewholder.color.ColorFactory;
-
-import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import fokia.gq.zhifu.Adapter.NoteAdapter;
 import fokia.gq.zhifu.Adapter.OutlayAdapter;
@@ -41,12 +28,7 @@ import fokia.gq.zhifu.Adapter.IncomeAdapter;
 import fokia.gq.zhifu.Dao.NoteDao;
 import fokia.gq.zhifu.Dao.OutaccountDao;
 import fokia.gq.zhifu.R;
-import fokia.gq.zhifu.model.ChangeListener;
-import fokia.gq.zhifu.model.Income;
 import fokia.gq.zhifu.model.MyMenuBar;
-import fokia.gq.zhifu.model.Note;
-import fokia.gq.zhifu.model.Outlay;
-import fokia.gq.zhifu.model.RecyclerItemClickListener;
 
 import static fokia.gq.zhifu.Dao.InaccountDao.incomes;
 import static fokia.gq.zhifu.Dao.NoteDao.noteList;
@@ -62,6 +44,7 @@ public class PageFragment extends BaseFragment{
     protected int mPage;
     protected SQLiteDatabase db;
     protected DBOpenHelper dbOpenHelper;
+    private LinearLayoutManager layoutManager;
 
     private NoteAdapter noteAdapter;
     private IncomeAdapter incomeAdapter;
@@ -69,8 +52,10 @@ public class PageFragment extends BaseFragment{
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
 
+    public static MultipleAdapter multipleAdapter;
+
     //加载页
-    private int flag;
+    public static int flag;
 
 
 
@@ -105,6 +90,7 @@ public class PageFragment extends BaseFragment{
                 getOutlays();
                 break;
             case 3:
+                getIncomes();
                 break;
             case 4:
                 getFlags();
@@ -112,6 +98,7 @@ public class PageFragment extends BaseFragment{
             default:
                 break;
         }
+        addItemDecoration(layoutManager);
         initSwipeRefresh(pageView);
         //打开页面即刷新
         refreshData();
@@ -168,6 +155,10 @@ public class PageFragment extends BaseFragment{
             default:
             break;
         }
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        //添加分割线
+        recyclerView.addItemDecoration(new DividerItemDecoration(
+                getActivity(), DividerItemDecoration.VERTICAL));
         return pageView;
     }
 
@@ -203,7 +194,7 @@ public class PageFragment extends BaseFragment{
     protected View createIncomeView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.fragment_payment, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager = new LinearLayoutManager(getActivity());
         if(incomeAdapter == null){
             incomeAdapter = new IncomeAdapter(incomes);
         }
@@ -211,20 +202,18 @@ public class PageFragment extends BaseFragment{
         if(recyclerView.getAdapter() == null){
             recyclerView.setAdapter(incomeAdapter);
         }
-        addItemDecoration(layoutManager);
         return view;
     }
 
     protected View createOutlayView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.fragment_payment, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager = new LinearLayoutManager(getActivity());
         if(outlayAdapter == null){
             outlayAdapter = new OutlayAdapter(outlays);
         }if(recyclerView.getAdapter() != outlayAdapter){
             recyclerView.setAdapter(outlayAdapter);
         }
-        addItemDecoration(layoutManager);
         return view;
     }
 
@@ -235,39 +224,27 @@ public class PageFragment extends BaseFragment{
     protected View createNoteView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.fragment_payment, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager = new LinearLayoutManager(getActivity());
         if(noteAdapter == null){
             noteAdapter = new NoteAdapter(noteList);
         }if(recyclerView.getAdapter() != noteAdapter){
             recyclerView.setAdapter(noteAdapter);
         }
-        recyclerView.setLayoutManager(layoutManager);
         return view;
     }
 
     private void addItemDecoration(RecyclerView.LayoutManager layoutManager){
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-//添加分割线
-        recyclerView.addItemDecoration(new DividerItemDecoration(
-                getActivity(), DividerItemDecoration.VERTICAL));
         recyclerView.setLayoutManager(layoutManager);
-        MultipleAdapter adapter = MultipleSelect.with(getActivity()).adapter(recyclerView.getAdapter())
-                .stateChangeListener(new ChangeListener())
+        multipleAdapter = MultipleSelect.with(getActivity()).adapter(recyclerView.getAdapter())
                 .decorateFactory(new ColorFactory())
                 .customMenu(new MyMenuBar(getActivity(), R.menu.select_toolbar, ContextCompat.getColor(getActivity(), R.color.colorPrimary), Gravity.TOP))
                 .build();
-        recyclerView.setAdapter(adapter);
-        //添加监听器
-       /* recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
+        recyclerView.setAdapter(multipleAdapter);
+    }
 
-            }
-
-            @Override
-            public void onItemLongClick(View view, int position) {
-
-            }
-        }));*/
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        db.close();
     }
 }

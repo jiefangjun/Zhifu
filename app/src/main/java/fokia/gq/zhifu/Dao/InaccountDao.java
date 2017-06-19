@@ -30,6 +30,9 @@ public class InaccountDao extends BaseDBDao{
         this.handler = handler;
         this.note = note;
     }
+    public InaccountDao(SQLiteDatabase db, String id){
+        super(db, id);
+    }
 
     @Override
     public void insert(SQLiteDatabase db, String id) {
@@ -46,6 +49,11 @@ public class InaccountDao extends BaseDBDao{
     @Override
     public void delete(SQLiteDatabase db, String id) {
         db.delete("tb_inaccount", "id=?", new String[]{id});
+    }
+
+    //迫不得已用时间来做参数
+    public static void staticDelete(SQLiteDatabase db,String id){
+        db.delete("tb_inaccount", "time=?", new String[]{id});
     }
 
     @Override
