@@ -41,6 +41,7 @@ public class Login extends BaseActivity {
                 if (passwordEdit.getText().toString().equals(passwordDao.query(db))) {
                     Intent intent = new Intent(Login.this, MainActivity.class);
                     startActivity(intent);
+                    db.close();
                 } else {
                     AlertDialog.Builder dialog = new AlertDialog.Builder(Login.this);
                     dialog.setItems(new String[]{"密码错误", "初始密码123"}, new DialogInterface.OnClickListener() {

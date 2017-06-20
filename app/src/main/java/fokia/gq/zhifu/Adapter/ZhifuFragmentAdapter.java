@@ -13,7 +13,7 @@ import fokia.gq.zhifu.fragmenttest.PageFragment;
 public class ZhifuFragmentAdapter extends FragmentPagerAdapter {
 
     final int PAGE_COUNT = 4;
-    private String tabTitles[] = new String[]{"收入","支出","总览", "便签"};
+    private String tabTitles[] = new String[]{"收入","支出", "便签", "总览"};
 
 
     public ZhifuFragmentAdapter(FragmentManager fm) {

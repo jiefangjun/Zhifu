@@ -32,8 +32,6 @@ import fokia.gq.zhifu.model.Income;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener{
 
-    private List<Income> incomes = new ArrayList<>();
-
     protected ZhifuFragmentAdapter pagerAdapter;
 
     protected ViewPager viewPager;
@@ -98,12 +96,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         } else if (id == R.id.nav_outlay) {
             tabLayout.getTabAt(1).select();
         } else if (id == R.id.nav_overcome) {
-            tabLayout.getTabAt(2).select();
-        } else if (id == R.id.nav_note) {
             tabLayout.getTabAt(3).select();
+        } else if (id == R.id.nav_note) {
+            tabLayout.getTabAt(2).select();
 
         } else if (id == R.id.nav_settings) {
-
+            Intent intent = new Intent(MainActivity.this, SettingActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_help){
             Intent intent = new Intent(MainActivity.this, HelpActivity.class);

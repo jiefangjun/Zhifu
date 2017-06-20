@@ -90,10 +90,10 @@ public class PageFragment extends BaseFragment{
                 getOutlays();
                 break;
             case 3:
-                getIncomes();
+                getFlags();
                 break;
             case 4:
-                getFlags();
+                getIncomes();
                 break;
             default:
                 break;

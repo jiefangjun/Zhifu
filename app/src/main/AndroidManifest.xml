@@ -20,6 +20,9 @@
         <activity android:name=".view.MainActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".view.HelpActivity" />
+        <activity android:name=".view.SettingActivity"/>
+        <activity android:name=".view.AddActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

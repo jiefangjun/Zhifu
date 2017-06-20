@@ -26,7 +26,8 @@ public class PasswordDao {
     public static void update(SQLiteDatabase db, String password){
         ContentValues values = new ContentValues();
         values.put("password", password);
-        db.update("tb_pwd", values, "password=?", new String[]{"*"});
+        db.update("tb_pwd", values, null, null);
+        //db.update("tb_pwd", values, "password=?", new String[]{"123"});
     }
 
     public String query(SQLiteDatabase db){
