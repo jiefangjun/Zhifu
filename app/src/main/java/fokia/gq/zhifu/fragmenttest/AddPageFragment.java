@@ -157,8 +157,6 @@ public class AddPageFragment extends PageFragment implements TimePickerFragment.
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //为spinner绑定我们定义好的数据适配器
         editType.setAdapter(spinnerAdapter);
-
-
     }
 
     private void showDialogPick(final TextView timeText) {

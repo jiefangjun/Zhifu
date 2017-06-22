@@ -59,7 +59,8 @@ public class UpdateIncomeDialog extends BaseDialog {
         updateHandler.setText(handler);
         updateNote.setText(note);
         updateDate.setText(date);
-        //spinner.setSelection(1);
+
+        initSpinner(spinner);
 
         return this;
     }
@@ -68,7 +69,7 @@ public class UpdateIncomeDialog extends BaseDialog {
         updateOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InaccountDao inaccountDao = new InaccountDao(db, null, Double.parseDouble(updateMoney.getText().toString()), updateDate.getText().toString(), "娱乐", updateHandler.getText().toString(), updateNote.getText().toString());
+                InaccountDao inaccountDao = new InaccountDao(db, null, Double.parseDouble(updateMoney.getText().toString()), updateDate.getText().toString(), type, updateHandler.getText().toString(), updateNote.getText().toString());
                 inaccountDao.update(db, updateDate.getText().toString());
                 dismiss();
             }

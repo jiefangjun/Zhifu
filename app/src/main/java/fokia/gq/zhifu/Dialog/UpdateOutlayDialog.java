@@ -55,7 +55,7 @@ public class UpdateOutlayDialog extends BaseDialog {
         updateAddress.setText(handler);
         updateNote.setText(note);
         updateDate.setText(date);
-        //spinner.setSelection(1);
+        initSpinner(spinner);
 
         return this;
     }
@@ -64,7 +64,7 @@ public class UpdateOutlayDialog extends BaseDialog {
         updateOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                OutaccountDao outaccountDao = new OutaccountDao(db, null, Double.parseDouble(updateMoney.getText().toString()), updateNote.getText().toString(), updateDate.getText().toString(), "娱乐", updateAddress.getText().toString());
+                OutaccountDao outaccountDao = new OutaccountDao(db, null, Double.parseDouble(updateMoney.getText().toString()), updateNote.getText().toString(), updateDate.getText().toString(), type, updateAddress.getText().toString());
                 outaccountDao.update(db, updateDate.getText().toString());
                 dismiss();
             }
