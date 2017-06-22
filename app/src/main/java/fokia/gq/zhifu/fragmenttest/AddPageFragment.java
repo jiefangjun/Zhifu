@@ -159,8 +159,8 @@ public class AddPageFragment extends PageFragment implements TimePickerFragment.
                 inaccountDao.insert(db, null);
                 break;
             case 2:
-                OutaccountDao outaccountDao = new OutaccountDao(db, null, getEditTextDouble(editMoney.getText().toString()), textDate.getText().toString(),
-                        "娱乐", editHandler.getText().toString(),  editNote.getText().toString());
+                OutaccountDao outaccountDao = new OutaccountDao(db, null, getEditTextDouble(editMoney.getText().toString()), editNote.getText().toString(),
+                        textDate.getText().toString(), "娱乐", editHandler.getText().toString());
                 outaccountDao.insert(db, null);
                 break;
             case 3:
