@@ -1,4 +1,4 @@
-package fokia.gq.zhifu.view;
+package fokia.gq.zhifu.fragmenttest;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,13 +22,11 @@ import fokia.gq.zhifu.Dao.InaccountDao;
 import fokia.gq.zhifu.Dao.NoteDao;
 import fokia.gq.zhifu.Dao.OutaccountDao;
 import fokia.gq.zhifu.R;
-import fokia.gq.zhifu.fragmenttest.DatePickerFragment;
-import fokia.gq.zhifu.fragmenttest.PageFragment;
-import fokia.gq.zhifu.fragmenttest.TimePickerFragment;
 
 /**
  * Created by archie on 6/14/17.
  */
+
 
 public class AddPageFragment extends PageFragment implements TimePickerFragment.DataCallBack{
 
@@ -55,7 +52,6 @@ public class AddPageFragment extends PageFragment implements TimePickerFragment.
         AddPageFragment addPageFragment = new AddPageFragment();
         addPageFragment.setArguments(args);
         return addPageFragment;
-
     }
 
     @Override
@@ -106,10 +102,10 @@ public class AddPageFragment extends PageFragment implements TimePickerFragment.
     }
 
     private void initControls(){
-        editMoney = (EditText) pageView.findViewById(R.id.payment_money);
-        editHandler = (EditText) pageView.findViewById(R.id.payment_handler_address);
-        editNote = (EditText) pageView.findViewById(R.id.payment_note);
-        editType = (Spinner) pageView.findViewById(R.id.payment_type);
+        editMoney = (EditText) pageView.findViewById(R.id.update_money);
+        editHandler = (EditText) pageView.findViewById(R.id.update_handler_address);
+        editNote = (EditText) pageView.findViewById(R.id.update_note);
+        editType = (Spinner) pageView.findViewById(R.id.update_type);
         calendarButton = (ImageButton) pageView.findViewById(R.id.payment_calendar);
         textDate = (TextView) pageView.findViewById(R.id.payment_date);
 

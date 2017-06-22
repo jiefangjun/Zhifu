@@ -60,11 +60,11 @@ public class InaccountDao extends BaseDBDao{
     public void update(SQLiteDatabase db, String id) {
         ContentValues contentValues = new ContentValues();
         contentValues.put("money", money);
-        contentValues.put("date", date);
+        contentValues.put("time", date);
         contentValues.put("type", type);
         contentValues.put("handler", handler);
         contentValues.put("mark",note);
-        db.update("tb_account", contentValues, "id=?", new String[]{id});
+        db.update("tb_inaccount", contentValues, "time=?", new String[]{id});
     }
 
     @Override

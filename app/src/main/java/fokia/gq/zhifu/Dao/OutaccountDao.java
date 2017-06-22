@@ -58,11 +58,11 @@ public class OutaccountDao extends BaseDBDao{
     public void update(SQLiteDatabase db, String id) {
         ContentValues contentValues = new ContentValues();
         contentValues.put("money", money);
-        contentValues.put("date", date);
+        contentValues.put("time", date);
         contentValues.put("type", type);
         contentValues.put("address", address);
         contentValues.put("mark",note);
-        db.update("tb_account", contentValues, "id=?", new String[]{id});
+        db.update("tb_outaccount", contentValues, "time=?", new String[]{id});
     }
 
     @Override

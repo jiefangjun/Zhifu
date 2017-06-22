@@ -16,9 +16,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.goyourfly.multiple.adapter.MultipleAdapter;
 import com.goyourfly.multiple.adapter.MultipleSelect;
 import com.goyourfly.multiple.adapter.viewholder.color.ColorFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import fokia.gq.zhifu.Adapter.NoteAdapter;
 import fokia.gq.zhifu.Adapter.OutlayAdapter;
@@ -27,8 +34,12 @@ import fokia.gq.zhifu.Dao.InaccountDao;
 import fokia.gq.zhifu.Adapter.IncomeAdapter;
 import fokia.gq.zhifu.Dao.NoteDao;
 import fokia.gq.zhifu.Dao.OutaccountDao;
+import fokia.gq.zhifu.Dialog.UpdateIncomeDialog;
+import fokia.gq.zhifu.Dialog.UpdateOutlayDialog;
 import fokia.gq.zhifu.R;
+import fokia.gq.zhifu.model.Income;
 import fokia.gq.zhifu.model.MyMenuBar;
+import fokia.gq.zhifu.model.Outlay;
 
 import static fokia.gq.zhifu.Dao.InaccountDao.incomes;
 import static fokia.gq.zhifu.Dao.NoteDao.noteList;
@@ -52,7 +63,22 @@ public class PageFragment extends BaseFragment{
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
 
+    BarDataSet setIncomes = null;
+    BarDataSet setOutlays = null;
+
+
+    private BarChart chart;
+    List<BarEntry> entrieIncomes = new ArrayList<>();
+    List<BarEntry> entrieOutlays = new ArrayList<>();
+
+    private Boolean incomeisRefresh = false;
+    private Boolean outlayisRefresh = false;
+    private Boolean flagisRefresh;
+
+
     public static MultipleAdapter multipleAdapter;
+
+
 
     //加载页
     public static int flag;
@@ -74,7 +100,10 @@ public class PageFragment extends BaseFragment{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPage = getArguments().getInt(ARG_PAGE);
+        if(getArguments() != null){
+            mPage = getArguments().getInt(ARG_PAGE);
+        }
+
         dbOpenHelper = new DBOpenHelper(getActivity(), "ZhiFu.db", null, 1);
         db = dbOpenHelper.getReadableDatabase();
     }
@@ -93,15 +122,17 @@ public class PageFragment extends BaseFragment{
                 getFlags();
                 break;
             case 4:
-                getIncomes();
+                getOvercome();
                 break;
             default:
                 break;
         }
-        addItemDecoration(layoutManager);
-        initSwipeRefresh(pageView);
-        //打开页面即刷新
-        refreshData();
+        if(recyclerView != null){
+            addItemDecoration(layoutManager);
+            initSwipeRefresh(pageView);
+            //打开页面即刷新,取消新线程，防止数据重复
+            //refreshData();
+        }
     }
 
     private void getIncomes(){
@@ -133,9 +164,57 @@ public class PageFragment extends BaseFragment{
         }
     }
 
-    private void getPayments(){
-        //TODO 获取支出和收入数据
+    private void getOvercome(){
+
+
+        if (outlays.size() ==0 ){
+            getOutlays();
+        }
+        int length;
+        if (incomes.size() > outlays.size()){
+            length = incomes.size();
+        }
+        else {
+            length = outlays.size();
+        }
+        if (setIncomes != null){
+            setIncomes.clear();
+            entrieIncomes.clear();
+        }
+        if (setOutlays != null){
+            setOutlays.clear();
+            entrieIncomes.clear();
+        }
+        for(int i = 0; i < length; i++) {
+            if(i < incomes.size()){
+                entrieIncomes.add(new BarEntry(i, (float) incomes.get(i).getMoney()));
+            }
+            if (i < outlays.size()){
+                entrieOutlays.add(new BarEntry(i, (float) outlays.get(i).getMoney()));
+            }
+        }
+
+        setIncomes = new BarDataSet(entrieIncomes, "收入");
+        setOutlays = new BarDataSet(entrieOutlays, "支出");
+
+        setIncomes.setColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
+        setOutlays.setColor(ContextCompat.getColor(getActivity(), R.color.colorAccent));
+
+        float groupSpace = 0.06f;
+        float barSpace = 0.02f; // x2 dataset
+        float barWidth = 0.45f; // x2 dataset
+// (0.02 + 0.45) * 2 + 0.06 = 1.00 -> interval per "group"
+
+        BarData data = new BarData(setIncomes, setOutlays);
+        data.setBarWidth(barWidth); // set the width of each bar
+        chart.setData(data);
+        chart.groupBars(0, groupSpace, barSpace); // perform the "explicit" grouping
+
+        chart.invalidate(); // refresh
+
+
     }
+
 
     @Nullable
     @Override
@@ -148,10 +227,11 @@ public class PageFragment extends BaseFragment{
                 pageView = createOutlayView(inflater, container, savedInstanceState);
                 break;
             case 3:
-                pageView = createIncomeView(inflater, container, savedInstanceState);
+                pageView = createNoteView(inflater, container, savedInstanceState);
                 break;
             case 4:
-                pageView = createNoteView(inflater, container, savedInstanceState);
+                pageView = createOverView(inflater, container, savedInstanceState);
+                return pageView;
             default:
             break;
         }
@@ -181,6 +261,16 @@ public class PageFragment extends BaseFragment{
     private void refreshData(){
         swipeRefreshLayout.setRefreshing(true);
         //TODO 判断是否需要刷新
+        if(incomeisRefresh){
+            incomes.clear();
+            getIncomes();
+            incomeisRefresh = false;
+        }
+        if (outlayisRefresh){
+            outlays.clear();
+            getOutlays();
+            outlayisRefresh = false;
+        }
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -202,6 +292,14 @@ public class PageFragment extends BaseFragment{
         if(recyclerView.getAdapter() == null){
             recyclerView.setAdapter(incomeAdapter);
         }
+        IncomeAdapter adapter = (IncomeAdapter) recyclerView.getAdapter();
+        adapter.setOnItemClickListener(new IncomeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, Income data) {
+                new UpdateIncomeDialog(getActivity()).setData(data.getMoney(), data.gethandler(), data.getType(), data.getNote(), data.getDate()).setCancelable(true).show();
+                incomeisRefresh = true;
+            }
+        });
         return view;
     }
 
@@ -214,12 +312,23 @@ public class PageFragment extends BaseFragment{
         }if(recyclerView.getAdapter() != outlayAdapter){
             recyclerView.setAdapter(outlayAdapter);
         }
+        OutlayAdapter adapter = (OutlayAdapter) recyclerView.getAdapter();
+        adapter.setOnItemClickListener(new OutlayAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, Outlay data) {
+                new UpdateOutlayDialog(getActivity()).setData(data.getMoney(), data.getAddress(), data.getType(), data.getNote(), data.getDate()).setCancelable(true).show();
+                outlayisRefresh = true;
+            }
+        });
+
         return view;
     }
 
-    /*private View createOverView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
-
-    }*/
+    private View createOverView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
+        View view = inflater.inflate(R.layout.fragemnt_chart, container, false);
+        chart = (BarChart) view.findViewById(R.id.chart);
+        return view;
+    }
 
     protected View createNoteView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.fragment_payment, container, false);
