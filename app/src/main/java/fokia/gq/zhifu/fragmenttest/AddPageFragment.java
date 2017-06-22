@@ -9,6 +9,8 @@ import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -16,7 +18,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import fokia.gq.zhifu.Dao.InaccountDao;
 import fokia.gq.zhifu.Dao.NoteDao;
@@ -30,6 +34,12 @@ import fokia.gq.zhifu.R;
 
 public class AddPageFragment extends PageFragment implements TimePickerFragment.DataCallBack{
 
+    public static List<String> typeList  = new ArrayList<>();
+
+    private ArrayAdapter<String> spinnerAdapter;
+
+    private String type;
+
     //获取activity float button 用来保存操作
     private FloatingActionButton floatingActionButton;
 
@@ -39,6 +49,7 @@ public class AddPageFragment extends PageFragment implements TimePickerFragment.
     private EditText editNote;
     private ImageButton calendarButton;
     private Spinner editType;
+    private TextView editHint;
 
     private int currentPage;
 
@@ -108,6 +119,10 @@ public class AddPageFragment extends PageFragment implements TimePickerFragment.
         editType = (Spinner) pageView.findViewById(R.id.update_type);
         calendarButton = (ImageButton) pageView.findViewById(R.id.payment_calendar);
         textDate = (TextView) pageView.findViewById(R.id.payment_date);
+        editHint = (TextView) pageView.findViewById(R.id.payment_hint);
+
+
+
 
         calendarButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,6 +130,35 @@ public class AddPageFragment extends PageFragment implements TimePickerFragment.
                 showDialogPick(textDate);
             }
         });
+
+        initSpinner();
+
+        editType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                type = spinnerAdapter.getItem(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                type = "";
+            }
+        });
+    }
+
+    private void initSpinner(){
+        if (typeList .isEmpty()){
+            typeList.add("娱乐");
+            typeList.add("人情");
+            typeList.add("餐饮");
+        }
+        spinnerAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, typeList);
+        //为适配器设置下拉列表下拉时的菜单样式。
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //为spinner绑定我们定义好的数据适配器
+        editType.setAdapter(spinnerAdapter);
+
+
     }
 
     private void showDialogPick(final TextView timeText) {
@@ -155,12 +199,12 @@ public class AddPageFragment extends PageFragment implements TimePickerFragment.
         switch (currentPage){
             case 1:
                 InaccountDao inaccountDao = new InaccountDao(db, null, getEditTextDouble(editMoney.getText().toString()), textDate.getText().toString(),
-                        "娱乐", editHandler.getText().toString(),  editNote.getText().toString());
+                        type, editHandler.getText().toString(),  editNote.getText().toString());
                 inaccountDao.insert(db, null);
                 break;
             case 2:
                 OutaccountDao outaccountDao = new OutaccountDao(db, null, getEditTextDouble(editMoney.getText().toString()), editNote.getText().toString(),
-                        textDate.getText().toString(), "娱乐", editHandler.getText().toString());
+                        textDate.getText().toString(), type, editHandler.getText().toString());
                 outaccountDao.insert(db, null);
                 break;
             case 3:
