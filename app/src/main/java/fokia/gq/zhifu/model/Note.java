@@ -6,6 +6,7 @@ package fokia.gq.zhifu.model;
 
 public class Note {
     private String content;
+    private int id;
 
     public Note(String content) {
         this.content = content;
@@ -17,5 +18,13 @@ public class Note {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id){
+        this.id = id;
     }
 }

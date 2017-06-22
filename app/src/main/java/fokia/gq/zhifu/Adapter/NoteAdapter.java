@@ -16,9 +16,16 @@ import fokia.gq.zhifu.model.Note;
  * Created by archie on 6/14/17.
  */
 
-public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>{
+public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> implements View.OnClickListener{
 
     private List<Note> notes = new ArrayList<>();
+    private NoteAdapter.OnItemClickListener mOnItemClickListener = null;
+
+    @Override
+    public void onClick(View v) {
+        mOnItemClickListener.onItemClick(v,(Note) v.getTag());
+    }
+
     static class ViewHolder extends RecyclerView.ViewHolder{
 
         private TextView content;
@@ -31,6 +38,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>{
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_note_item, parent, false);
         ViewHolder holder = new ViewHolder(view);
+        view.setOnClickListener(this);
         return holder;
     }
 
@@ -42,10 +50,19 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>{
     public void onBindViewHolder(ViewHolder holder, int position) {
         Note note = notes.get(position);
         holder.content.setText(note.getContent());
+        holder.itemView.setTag(note);
     }
 
     @Override
     public int getItemCount() {
         return notes.size();
+    }
+
+    public static interface OnItemClickListener {
+        void onItemClick(View view , Note data);
+    }
+
+    public void setOnItemClickListener(NoteAdapter.OnItemClickListener listener) {
+        this.mOnItemClickListener = listener;
     }
 }

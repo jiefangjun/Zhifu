@@ -35,10 +35,12 @@ import fokia.gq.zhifu.Adapter.IncomeAdapter;
 import fokia.gq.zhifu.Dao.NoteDao;
 import fokia.gq.zhifu.Dao.OutaccountDao;
 import fokia.gq.zhifu.Dialog.UpdateIncomeDialog;
+import fokia.gq.zhifu.Dialog.UpdateNoteDialog;
 import fokia.gq.zhifu.Dialog.UpdateOutlayDialog;
 import fokia.gq.zhifu.R;
 import fokia.gq.zhifu.model.Income;
 import fokia.gq.zhifu.model.MyMenuBar;
+import fokia.gq.zhifu.model.Note;
 import fokia.gq.zhifu.model.Outlay;
 
 import static fokia.gq.zhifu.Dao.InaccountDao.incomes;
@@ -73,7 +75,7 @@ public class PageFragment extends BaseFragment{
 
     private Boolean incomeisRefresh = false;
     private Boolean outlayisRefresh = false;
-    private Boolean flagisRefresh;
+    private Boolean flagisRefresh = false;
 
 
     public static MultipleAdapter multipleAdapter;
@@ -271,6 +273,11 @@ public class PageFragment extends BaseFragment{
             getOutlays();
             outlayisRefresh = false;
         }
+        if (flagisRefresh){
+            noteList.clear();
+            getFlags();
+            flagisRefresh = false;
+        }
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -320,7 +327,6 @@ public class PageFragment extends BaseFragment{
                 outlayisRefresh = true;
             }
         });
-
         return view;
     }
 
@@ -339,6 +345,14 @@ public class PageFragment extends BaseFragment{
         }if(recyclerView.getAdapter() != noteAdapter){
             recyclerView.setAdapter(noteAdapter);
         }
+        NoteAdapter adapter = (NoteAdapter) recyclerView.getAdapter();
+        adapter.setOnItemClickListener(new NoteAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, Note data) {
+                new UpdateNoteDialog(getActivity()).setData(data.getContent(), data.getId()).setCancelable(true).show();
+                flagisRefresh = true;
+            }
+        });
         return view;
     }
 

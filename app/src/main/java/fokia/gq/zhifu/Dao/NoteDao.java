@@ -55,9 +55,11 @@ public class NoteDao extends BaseDBDao {
     }
 
     public static void getNotes(SQLiteDatabase db) {
-        Cursor cursor = db.query("tb_note", null, null, null, null, null, null);
+        Cursor cursor = db.query("tb_note", null, null, null, null, null, "id DESC");
         while (cursor.moveToNext()) {
-            noteList.add(new Note(cursor.getString(1)));
+            Note note = new Note(cursor.getString(1));
+            note.setId(cursor.getInt(0));
+            noteList.add(note);
         }
     }
 }
