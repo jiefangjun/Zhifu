@@ -105,13 +105,5 @@ public abstract class BaseDialog  {
         dialog.dismiss();
     }
 
-    public boolean isShowing(){
-        return dialog.isShowing();
-    }
-
-    public BaseDialog setdismissListeren(DialogInterface.OnDismissListener dismissListener){
-        dialog.setOnDismissListener(dismissListener);
-        return this;
-    }
 
 }
